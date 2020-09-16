@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>主机列表</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+  <link rel="stylesheet" href="/static/style/admin.css" media="all">
+</head>
+<body>
+
+  <div class="layui-fluid">
+    <div class="layui-card">
+
+       <div class="layui-card-body">
+           <div style="padding-bottom: 10px;">
+               <button class="layui-btn layuiadmin-btn-list" data-type="add">添加主机</button>
+           </div>
+       </div>
+
+       <div class="layui-card-body">
+           <table class="layui-hide" id="test-table-data"></table>
+       </div>
+
+    </div>
+  </div>
+
+  <script type="text/html" id="button-edit">
+    <a class="layui-btn layui-btn-xs" lay-event="edit" href="product_collection_edit.html">ssh</a>
+  </script>
+
+  </body>
+
+  <script src="/static/layui/layui.js"></script>
+  <script src="/static/layui/lay/modules/layer.js"></script>
+  <script src="/static/jquery-2.1.4/jquery.min.js"></script>
+
+  <script>
+  layui.config({
+    base: '/static/' //静态资源所在路径
+  }).extend({
+    index: 'lib/index' //主入口模块
+  }).use(['index', 'table', 'laydate'], function(){
+    var table = layui.table;
+
+    table.render({
+      elem: '#test-table-data'
+      ,url: '/host_list'
+      ,method: "GET"
+      ,cols: [[
+         {type:'checkbox'}
+        ,{field:'name', minWidth:100, title: '主机名称', align: 'center'}
+        ,{field:'host', minWidth:100, title: 'host', align: 'center'}
+        ,{field:'port', minWidth:100, title: '端口', align: 'center'}
+        ,{field:'username', minWidth:100, title: '用户名', align: 'center'}
+        ,{field:'create_dt', minWidth:100, title: '添加时间', align: 'center'}
+        ,{field:'update_dt', minWidth:100, title: '更新时间', align: 'center'}
+        ,{field:'operation', minWidth:100, title: '操作', align: 'center', 'toolbar': '#button-edit'}
+      ]]
+      ,parseData: function (resp) {
+          console.log(resp);
+            return {
+                "code": resp.code,
+                "msg": resp.msg,
+                "data": resp.data
+            }
+        }
+      ,size: "lg"
+      ,even: true    // 表格风格
+      ,limit: 10     // 条数
+      ,page: true    // 是否显示分页
+    });
+
+  });
+
+  </script>
+
+</html>
